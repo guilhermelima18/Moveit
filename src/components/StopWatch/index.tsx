@@ -51,7 +51,7 @@ const SectionStopWatch = styled.div`
         margin: 0 2px;
     }
 
-    button {
+    button.btn-stopWatch {
         background-color: var(--blue);
         border: 0;
         outline: none;
@@ -65,14 +65,43 @@ const SectionStopWatch = styled.div`
         margin-top: 20px;
     }
 
-    button:hover {
+    button.btn-stopWatch:not(:disabled):hover {
         background-color: var(--blue-dark);
+    }
+
+    button.btn-stopWatch:disabled {
+        background-color: var(--white);
+        color: var(--text);
+        cursor: not-allowed;
+    }
+
+    .btn-active {
+        background-color: var(--white);
+        color: var(--title);
+        border: 1px solid #333;
+        outline: none;
+        width: 100%;
+        min-width: 250px;
+        height: 70px;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        transition: 400ms;
+        margin-top: 20px;
+    }
+
+    .btn-active:hover {
+        background-color: red;
+        color: var(--white);
+        border: 0;
     }
 `;
 
+/* let countdownTimeout = NodeJS.Timeout; */
+
 export default function StopWatch() {
-    const [time, setTime] = useState(25 * 60);
-    const [active, setActive] = useState(false);
+    const [time, setTime] = useState(0.2 * 60);
+    const [isActive, setIsActive] = useState(false);
+    const [hasFinished, setHasFinished] = useState(false);
 
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -81,16 +110,25 @@ export default function StopWatch() {
     const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('');
 
     function startCountdown() {
-        setActive(true);
+        setIsActive(true);
     };
 
+    function resetCountdown() {
+        /* clearTimeout(countdownTimeout); */
+        setIsActive(false);
+        setTime(0.2 * 60);
+    }
+
     useEffect(() => {
-        if (active && time > 0) {
-            setTimeout(() => {
-                setTime(time - 1);
-            }, 1000)
+        if (isActive && time > 0) {
+            /* countdownTimeout =  */setTimeout(() => {
+            setTime(time - 1);
+        }, 1000)
+        } else if (isActive && time === 0) {
+            setHasFinished(true);
+            setIsActive(false);
         }
-    }, [active, time])
+    }, [isActive, time])
 
     return (
         <SectionStopWatch>
@@ -99,18 +137,43 @@ export default function StopWatch() {
                     <p>{minuteLeft}</p>
                     <p>{minuteRight}</p>
                 </div>
+
                 <span>:</span>
+
                 <div className="seconds">
                     <p>{secondLeft}</p>
                     <p>{secondRight}</p>
                 </div>
             </div>
-            <button
-                type="button"
-                onClick={startCountdown}
-            >
-                Iniciar um ciclo
-            </button>
+
+            { hasFinished ? (
+                <button 
+                disabled
+                className="btn-stopWatch"
+                >
+                    Ciclo encerrado
+                </button>
+            ) : (
+                    <>
+                        { isActive ? (
+                            <button
+                                type="button"
+                                className="btn-active"
+                                onClick={resetCountdown}
+                            >
+                                Abandonar ciclo
+                            </button>
+                        ) : (
+                                <button
+                                    type="button"
+                                    className="btn-stopWatch"
+                                    onClick={startCountdown}
+                                >
+                                    Iniciar um ciclo
+                                </button>
+                            )}
+                    </>
+                )}
         </SectionStopWatch>
     );
 }

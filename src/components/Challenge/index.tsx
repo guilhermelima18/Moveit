@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
+import { ChallengesContext } from '../../contexts/ChallengesContext';
 
 const SectionChallenge = styled.div`
     width: 100%;
@@ -30,11 +32,13 @@ const SectionChallenge = styled.div`
 `;
 
 export default function Challenge() {
+    const { challengesCompleted } = useContext(ChallengesContext);
+
     return (
         <SectionChallenge>
             <div className="challengers">
                 <span>Desafios completos</span>
-                <span>00</span>
+                <span>{challengesCompleted}</span>
             </div>
             <div className="challenge-progress" />
         </SectionChallenge>

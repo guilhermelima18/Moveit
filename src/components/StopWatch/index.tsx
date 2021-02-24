@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import { ChallengesContext } from '../../contexts/ChallengesContext';
 
 const SectionStopWatch = styled.div`
     width: 100%;
@@ -96,10 +97,12 @@ const SectionStopWatch = styled.div`
     }
 `;
 
-/* let countdownTimeout = NodeJS.Timeout; */
+let countdownTimeout : NodeJS.Timeout;
 
 export default function StopWatch() {
-    const [time, setTime] = useState(0.2 * 60);
+    const { startNewChallenge } = useContext(ChallengesContext);
+
+    const [time, setTime] = useState(0.1 * 60);
     const [isActive, setIsActive] = useState(false);
     const [hasFinished, setHasFinished] = useState(false);
 
@@ -114,19 +117,20 @@ export default function StopWatch() {
     };
 
     function resetCountdown() {
-        /* clearTimeout(countdownTimeout); */
+        clearTimeout(countdownTimeout);
         setIsActive(false);
-        setTime(0.2 * 60);
+        setTime(0.1 * 60);
     }
 
     useEffect(() => {
         if (isActive && time > 0) {
-            /* countdownTimeout =  */setTimeout(() => {
+            countdownTimeout = setTimeout(() => {
             setTime(time - 1);
         }, 1000)
         } else if (isActive && time === 0) {
             setHasFinished(true);
             setIsActive(false);
+            startNewChallenge();
         }
     }, [isActive, time])
 
@@ -147,9 +151,9 @@ export default function StopWatch() {
             </div>
 
             { hasFinished ? (
-                <button 
-                disabled
-                className="btn-stopWatch"
+                <button
+                    disabled
+                    className="btn-stopWatch"
                 >
                     Ciclo encerrado
                 </button>

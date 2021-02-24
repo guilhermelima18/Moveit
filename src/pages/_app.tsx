@@ -1,9 +1,13 @@
-import App from 'next/app'
 import '../styles/global.css';
 
-export default class MyApp extends App {
-  render() {
-    const { Component, pageProps } = this.props
-    return <Component {...pageProps} />
-  }
+import { ChallengesProvider } from '../contexts/ChallengesContext';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <ChallengesProvider>
+      < Component {...pageProps} />
+    </ChallengesProvider>
+  );
 }
+
+export default MyApp;

@@ -5,6 +5,7 @@ import StopWatch from '../components/StopWatch/index';
 
 import Head from 'next/head';
 import Init from '../components/ChallengeInit';
+import { CountdownProvider } from '../contexts/CountdownContext';
 
 export default function Home() {
     return (
@@ -14,16 +15,18 @@ export default function Home() {
             </Head>
 
             <Header />
-            <main>
-                <section className="content-left">
-                    <Avatar />
-                    <Challenge />
-                    <StopWatch />
-                </section>
-                <section className="content-right">
-                    <Init />
-                </section>
-            </main>
+            <CountdownProvider>
+                <main>
+                    <section className="content-left">
+                        <Avatar />
+                        <Challenge />
+                        <StopWatch />
+                    </section>
+                    <section className="content-right">
+                        <Init />
+                    </section>
+                </main>
+            </CountdownProvider>
         </div>
     );
 }

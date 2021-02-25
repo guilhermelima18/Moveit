@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { ChallengesContext } from '../../contexts/ChallengesContext';
+import { CountdownContext } from '../../contexts/CountdownContext';
 
 const Rewards = styled.div`
     background-color: var(--white);
@@ -107,7 +108,18 @@ const Rewards = styled.div`
 `;
 
 export default function Init() {
-    const { activeChallenge, resetChallenge } = useContext(ChallengesContext);
+    const { activeChallenge, resetChallenge, completeChallenge } = useContext(ChallengesContext);
+    const { resetCountdown } = useContext(CountdownContext);
+
+    function handleChallengeSucceeded() {
+        completeChallenge();
+        resetCountdown();
+    }
+
+    function handleChallengeFailed() {
+        resetChallenge();
+        resetCountdown();
+    }
 
     return (
         <Rewards>
@@ -123,7 +135,7 @@ export default function Init() {
                         <button
                             type="button"
                             className="challengeFailedButton"
-                            onClick={resetChallenge}
+                            onClick={handleChallengeFailed}
                         >
                             Falhei
                         </button>
@@ -131,6 +143,7 @@ export default function Init() {
                         <button
                             type="button"
                             className="challengeSucceededButton"
+                            onClick={handleChallengeSucceeded}
                         >
                             Completei
                         </button>

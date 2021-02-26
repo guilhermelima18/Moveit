@@ -38,10 +38,10 @@ export default function Avatar() {
 
     return (
         <SectionAvatar>
-            <img src="https://avatars.githubusercontent.com/u/60123147?s=460&u=40de475fddcfeca4220eba6ec78f0bb6d2c9b2a9&v=4" alt="Avatar"/>
+            <img src="https://avatars.githubusercontent.com/u/60123147?s=460&u=40de475fddcfeca4220eba6ec78f0bb6d2c9b2a9&v=4" alt="Avatar" />
             <div className="name">
                 <h3>Guilherme Lima</h3>
-                <p><img src="icons/level.svg" alt="Ícone"/>Level {level}</p>
+                <p><img src="icons/level.svg" alt="Ícone" />Level {level}</p>
             </div>
         </SectionAvatar>
     );
